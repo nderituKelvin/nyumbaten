@@ -1,0 +1,84 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\County;
+use Illuminate\Http\Request;
+
+class CountyController extends Controller{
+    private $user;
+    public function __construct(){
+        $this->middleware('auth:api');
+        $this->user = auth('api')->user();
+    }
+
+    public function index(){
+
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\County  $county
+     * @return \Illuminate\Http\Response
+     */
+    public function show(County $county)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\County  $county
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(County $county)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\County  $county
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, County $county)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\County  $county
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(County $county)
+    {
+        //
+    }
+}
