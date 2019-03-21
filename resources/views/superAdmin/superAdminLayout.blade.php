@@ -61,8 +61,8 @@
                     <div class="user__info" data-toggle="dropdown">
                         <img class="user__img" src="{{ asset('img/logo.png') }}" alt="">
                         <div>
-                            <div class="user__name">Nderitu Kelvin</div>
-                            <div class="user__email">0705314090</div>
+                            <div class="user__name">{{ \Illuminate\Support\Facades\Auth::user()->name }}</div>
+                            <div class="user__email">{{ \Illuminate\Support\Facades\Auth::user()->phone }}</div>
                         </div>
                     </div>
                 </div>

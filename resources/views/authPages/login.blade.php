@@ -79,7 +79,6 @@
                 <div class="form-group form-group--centered">
                     <input type="password" class="form-control text-center" name="password" placeholder="Password" minlength="6" required>
                 </div>
-                <input type="hidden" value="admin" name="usertype">
                 <div class="form-group">
                     <label class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" required>
