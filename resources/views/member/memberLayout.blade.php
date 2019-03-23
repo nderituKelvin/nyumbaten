@@ -101,6 +101,10 @@
 <!-- Javascript -->
 <!-- Vendors -->
 <script src="{{ asset('js/app.js') }}"></script>
+<script type="text/javascript">
+    var $target = $('html,body');
+    $target.animate({scrollTop: $target.height()}, 1000);
+</script>
 <script src="{{ asset('vendors/bower_components/jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ asset('vendors/bower_components/popper.js/dist/umd/popper.min.js') }}"></script>
 <script src="{{ asset('vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>

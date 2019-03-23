@@ -1,14 +1,6 @@
 <template>
     <div>
         <div>
-            <header class="content__title">
-                <h1>Home</h1>
-
-                <div class="text-right">
-                    <button @click="viewServices" class="btn login__block__btn"> <i class="zmdi zmdi-eye"></i> &nbsp;&nbsp;&nbsp; View Services </button>
-                </div>
-            </header>
-
             <div class="messages">
 
                 <div class="messages__body">
@@ -58,9 +50,23 @@
                             <input class="messages__reply__text" v-model="form.message" placeholder="Type a message..." required/>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="text-left">
+                    <button @click="viewServices" class="btn login__block__btn"> <i class="zmdi zmdi-eye"></i> &nbsp;&nbsp;&nbsp; View Services </button>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="text-right">
+                    <button @click="logout" class="btn login__block__btn"> <i class="zmdi zmdi-sign-in"></i> &nbsp;&nbsp;Logout </button>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -79,6 +85,9 @@
             }
         },
         methods:{
+            logout(){
+                window.location.href = "/logout";
+            },
             loadMe(){
                 this.form.post('/api/userResource/loadMe').then(function (data) {
                     console.log(data.data);
