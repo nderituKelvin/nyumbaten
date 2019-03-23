@@ -21,20 +21,22 @@ class UserController extends Controller{
         if(User::where('phone', $request['phone'])->count() == 0){
             if(isset($request['usertype'])){
                 $usertype = 'member';
+                $status = 'pending';
             }else{
                 $usertype = 'admin';
+                $status = 'active';
             }
 
             User::create([
                 'name' => $request['name'],
                 'phone' => $request['phone'],
                 'usertype' => $usertype,
-                'status' => 'active',
+                'status' => $status,
                 'password' => Hash::make($request['password'])
             ]);
 
             if($usertype == "member"){
-                return redirect()->route('askToJoinGroup');
+                return redirect()->route('memberSignIn');
             }
 
             return $exts->backWithMessage(

@@ -64,6 +64,11 @@ Route::post('memberResource/checkIfAssignedToGroup', [
     'uses' => 'API\MemberContoller@checkIfAssignedToGroup'
 ]);
 
+Route::post('memberResource/approveMember/{id}', [
+    'as' => 'approveMember',
+    'uses' => 'API\MemberContoller@approveMember'
+]);
+
 Route::post('groupResource/getGroupData', [
     'as' => 'getGroupData',
     'uses' => 'API\GroupController@getGroupData'

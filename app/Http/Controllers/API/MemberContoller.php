@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Group;
 use App\Member;
+use App\Message;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -15,98 +16,72 @@ class MemberContoller extends Controller{
         $this->user = auth('api')->user();
     }
 
-    public function index()
-    {
-        //
+    public function index(){
+
     }
 
     public function getGroupMembers(){
         $grp = Group::where('admin', $this->user->id)->first();
-        $members = Member::where('group', $grp->id)->get();
-        $memberList = array();
-        foreach ($members as $member){
-            $user = User::findOrFail($member->user);
-            array_push($memberList, $user);
-        }
-        return $memberList;
+        return Member::where('group', $grp->id)
+            ->with('User')
+            ->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function create(){
+
     }
 
     public function checkIfAssignedToGroup(){
         return Member::where('user', $this->user->id)->where('status', '1')->count();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request){
         if(Member::where('user', $this->user->id)->where('status', '1')->count() == 0){
             return Member::create([
                 'user' => $this->user->id,
-                'status' => '1',
+                'status' => '0',
                 'group' => $request['group']
             ]);
         }else{
             return response()->json([
-                'error' => 'Sorry, You already belong to a group'
+                'error' =>  'Sorry, You already belong to a group'
             ], 422);
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+    public function show($id){
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+    public function edit($id){
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $id){
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id){
+        $mmbr = Member::findOrFail($id);
+        $messages = Message::where('user', $mmbr->user)->get();
+        foreach ($messages as $message){
+            $message->delete();
+        }
+        $mmbr->delete();
+        return response()->json([
+            'message' => 'deleted'
+        ], 200);
+    }
+
+    public function approveMember($id){
+        $member = Member::findOrFail($id);
+        $member->status = 1;
+        $userr = User::findOrFail($member->user);
+        $userr->status = "active";
+        $member->save();
+        $userr->save();
+        return response()->json([
+            'message' => 'approved'
+        ], 200);
     }
 }

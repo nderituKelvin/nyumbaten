@@ -132,6 +132,7 @@
         created() {
             this.loadCounties();
             this.checkForGroup();
+            this.interval = setInterval(() => this.checkForGroup(), 2000);
         }
     }
 </script>

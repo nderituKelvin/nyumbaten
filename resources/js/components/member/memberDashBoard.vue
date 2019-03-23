@@ -133,7 +133,7 @@
             this.getNumberOfGroups();
             this.getGroupData();
             this.loadMessages();
-            this.interval = setInterval(() => this.loadMessages(), 2000)
+            this.interval = setInterval(() => this.loadMessages(), 2000);
         },
         updated() {
             var VueScrollTo = require('vue-scrollto');

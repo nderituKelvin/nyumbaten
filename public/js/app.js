@@ -2103,15 +2103,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data() {
     return {
-      members: []
+      members: [],
+      me: ""
     };
   },
 
   methods: {
+    loadMe() {
+      axios.post('/api/userResource/loadMe').then(function (data) {
+        console.log(data.data);
+        this.me = data.data;
+      }.bind(this));
+    },
+
     loadMembers() {
       axios.post('/api/memberResource/getMembers').then(function (data) {
         console.log(data.data);
@@ -2119,7 +2126,19 @@ __webpack_require__.r(__webpack_exports__);
       }.bind(this));
     },
 
-    deleteMember() {},
+    deleteMember(id) {
+      axios.delete('/api/memberResource/' + id).then(function () {
+        console.log(data);
+      });
+      this.loadMembers();
+    },
+
+    approveMember(id) {
+      axios.post('/api/memberResource/approveMember/' + id).then(function () {
+        console.log(data);
+      });
+      this.loadMembers();
+    },
 
     goToAddMember() {
       router.push('/admin/newmember');
@@ -2128,6 +2147,7 @@ __webpack_require__.r(__webpack_exports__);
   },
 
   created() {
+    this.loadMe();
     this.loadMembers();
   }
 
@@ -3825,6 +3845,7 @@ __webpack_require__.r(__webpack_exports__);
   created() {
     this.loadCounties();
     this.checkForGroup();
+    this.interval = setInterval(() => this.checkForGroup(), 2000);
   }
 
 });
@@ -8560,7 +8581,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -8674,7 +8695,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -40797,11 +40818,49 @@ var render = function() {
               "tbody",
               _vm._l(_vm.members, function(member) {
                 return _c("tr", [
-                  _c("td", [_vm._v(_vm._s(member.name))]),
+                  _c("td", [_vm._v(_vm._s(member.user.name))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(member.phone))]),
+                  _c("td", [_vm._v(_vm._s(member.user.phone))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(member.status))])
+                  _c("td", [_vm._v(_vm._s(member.user.status))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn login__block__btn",
+                        attrs: {
+                          disabled: member.status === "1",
+                          title: "Approve Member"
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.approveMember(member.id)
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "zmdi zmdi-check-circle" })]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn login__block__btn",
+                        attrs: {
+                          disabled: member.user.id === _vm.me.id,
+                          title: "Delete Member"
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteMember(member.id)
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "zmdi zmdi-delete" })]
+                    )
+                  ])
                 ])
               }),
               0
@@ -40831,7 +40890,11 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_c("b", [_vm._v("Phone Number")])]),
         _vm._v(" "),
-        _c("th", [_c("b", [_vm._v("Status")])])
+        _c("th", [_c("b", [_vm._v("Status")])]),
+        _vm._v(" "),
+        _c("th", [_c("b", [_vm._v("Approve")])]),
+        _vm._v(" "),
+        _c("th", [_c("b", [_vm._v("Delete")])])
       ])
     ])
   }

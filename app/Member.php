@@ -8,4 +8,8 @@ class Member extends Model{
     protected $fillable = [
         'user', 'status', 'group'
     ];
+
+    public function User(){
+        return $this->belongsTo('\App\User', 'user');
+    }
 }

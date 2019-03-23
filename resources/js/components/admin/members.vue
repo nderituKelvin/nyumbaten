@@ -17,27 +17,26 @@
                                 <th><b>Name</b></th>
                                 <th><b>Phone Number</b></th>
                                 <th><b>Status</b></th>
-                                <!--<th><b>Remove</b></th>-->
+                                <th><b>Approve</b></th>
+                                <th><b>Delete</b></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="member in members">
-                                <td>{{ member.name }}</td>
-                                <td>{{ member.phone }}</td>
-                                <td>{{ member.status }}</td>
-                                <!--<td>-->
-                                    <!--<button @click="deleteMember" class="btn login__block__btn">-->
-                                        <!--<i class="zmdi zmdi-refresh"></i>-->
-                                    <!--</button>-->
-                                <!--</td>-->
-                                <!--<td>-->
-                                    <!--<button @click="deleteMember" class="btn login__block__btn">-->
-                                        <!--<i class="zmdi zmdi-delete"></i>-->
-                                    <!--</button>-->
-                                <!--</td>-->
-
+                                <td>{{ member.user.name }}</td>
+                                <td>{{ member.user.phone }}</td>
+                                <td>{{ member.user.status }}</td>
+                                <td>
+                                    <button :disabled="member.status === '1'" @click="approveMember(member.id)" class="btn login__block__btn" title="Approve Member">
+                                        <i class="zmdi zmdi-check-circle"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button :disabled="member.user.id === me.id" @click="deleteMember(member.id)" class="btn login__block__btn" title="Delete Member">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                </td>
                             </tr>
-
                         </tbody>
                     </table>
                 </div>
@@ -53,24 +52,41 @@
     export default {
         data(){
             return{
-                members: []
+                members: [],
+                me : ""
             }
         },
         methods:{
+            loadMe(){
+                axios.post('/api/userResource/loadMe').then(function (data) {
+                    console.log(data.data);
+                    this.me = data.data;
+                }.bind(this));
+            },
             loadMembers(){
                 axios.post('/api/memberResource/getMembers').then(function (data) {
                     console.log(data.data);
                     this.members = data.data;
                 }.bind(this));
             },
-            deleteMember(){
-
+            deleteMember(id){
+                axios.delete('/api/memberResource/'+id).then(function () {
+                   console.log(data);
+                });
+                this.loadMembers();
+            },
+            approveMember(id){
+                axios.post('/api/memberResource/approveMember/'+id).then(function () {
+                    console.log(data);
+                });
+                this.loadMembers();
             },
             goToAddMember(){
                 router.push('/admin/newmember');
             },
         },
         created() {
+            this.loadMe();
             this.loadMembers();
         }
     }
