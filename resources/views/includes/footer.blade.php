@@ -1,3 +1,3 @@
 <footer class="footer hidden-xs-down">
-    <p>© Martin | +254705314090</p>
+    <p>©{{ date("YYYY") }} | +254705314090</p>
 </footer>

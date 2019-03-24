@@ -3793,7 +3793,7 @@ __webpack_require__.r(__webpack_exports__);
 
     joinGroup() {
       this.form.post('/api/memberResource').then(function (data) {
-        router.push('/member');
+        window.location.href = '/member/sign/in';
       }.bind(this));
     },
 
@@ -3845,7 +3845,7 @@ __webpack_require__.r(__webpack_exports__);
   created() {
     this.loadCounties();
     this.checkForGroup();
-    this.interval = setInterval(() => this.checkForGroup(), 2000);
+    this.checkForGroup();
   }
 
 });

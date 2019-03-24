@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Member;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -73,7 +74,16 @@ class UserController extends Controller{
             }elseif (Auth::user()->usertype == "admin"){
                 return redirect()->to("/admin");
             }elseif (Auth::user()->usertype == "member"){
-                return redirect()->to("/member");
+                if(Member::where('user', Auth::user()->getAuthIdentifier())->where('status', '1')->count() == 1){
+                    return redirect()->to("/member");
+                }else if(Member::where('user', Auth::user()->getAuthIdentifier())->where('status', '1')->count() == 0){
+                    if(Member::where('user', Auth::user()->getAuthIdentifier())->where('status', '0')->count() == 1){
+                        return $exts->backWithMessage(
+                        "Please Wait", "Your Group Approval is pending", 'error'
+                        );
+                    }
+                }
+
             }else{
                 return $exts->backWithMessage(
                     "Success", "User successfully created", 'success'
