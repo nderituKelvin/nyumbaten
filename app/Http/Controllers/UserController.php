@@ -81,7 +81,13 @@ class UserController extends Controller{
                         return $exts->backWithMessage(
                         "Please Wait", "Your Group Approval is pending", 'error'
                         );
+                    }elseif (Member::where('user', Auth::user()->getAuthIdentifier())->where('status', '0')->count() == 0){
+                        return redirect()->to('/member');
+                    }else{
+                        return redirect()->route('logout');
                     }
+                }else{
+                    return redirect()->route('logout');
                 }
 
             }else{

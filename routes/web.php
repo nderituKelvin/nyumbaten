@@ -35,8 +35,6 @@ Route::get('member/sign/up', [
     }
 ]);
 
-
-
 Route::get('asktojoingroup', [
     'as' => 'askToJoinGroup',
     function () {
